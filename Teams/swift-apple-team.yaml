@@ -1,0 +1,26 @@
+name: Swift Apple Team
+description: Full-stack team for iOS/macOS/visionOS/watchOS applications
+
+core:
+  - id: proxy-product-owner
+    file: Support/ProductOwner/proxy-product-owner.md
+  - id: requirements-engineer
+    file: Support/Requirements/requirements-engineer.md
+  # orchestrator coming soon
+
+architects:
+  - id: swift-app-architect
+    file: Teams/swift-apple/swift-app-architect.md
+    default: true
+
+developers:
+  - id: swift-implementation-engineer
+    file: Teams/swift-apple/swift-implementation-engineer.md
+    default: true
+
+testers: []
+
+support:
+  - id: principal-designer
+    file: Support/Designers/principal-designer.md
+    default: false

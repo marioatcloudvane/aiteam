@@ -1,0 +1,23 @@
+name: Python SaaS Team
+description: Full-stack team for Python-based SaaS products
+
+core:
+  - id: proxy-product-owner
+    file: Support/ProductOwner/proxy-product-owner.md
+  - id: requirements-engineer
+    file: Support/Requirements/requirements-engineer.md
+  # orchestrator coming soon
+
+architects:
+  - id: python-saas-architect
+    file: Teams/python-saas/python-saas-architect.md
+    default: true
+
+developers: []
+
+testers: []
+
+support:
+  - id: principal-designer
+    file: Support/Designers/principal-designer.md
+    default: false

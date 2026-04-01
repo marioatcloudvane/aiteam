@@ -1,0 +1,10 @@
+teams:
+  - id: swift-apple
+    name: Swift Apple Team
+    description: Full-stack team for iOS/macOS/visionOS/watchOS applications
+    file: Teams/swift-apple-team.yaml
+
+  - id: python-saas
+    name: Python SaaS Team
+    description: Full-stack team for Python-based SaaS products
+    file: Teams/python-saas-team.yaml
