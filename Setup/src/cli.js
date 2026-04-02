@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const { fetchTeams, fetchTeamConfig } = require('./fetch');
 const { selectTeam, selectAgents } = require('./prompts');
+const { collectSettings } = require('./settings');
 const { installAgents } = require('./install');
 
 async function main() {
@@ -20,8 +21,11 @@ async function main() {
     process.exit(0);
   }
 
+  console.log('');
+  const settings = await collectSettings();
+
   console.log(`\nInstalling ${agents.length} agent(s)...`);
-  await installAgents(agents);
+  await installAgents(agents, settings);
 
   console.log(chalk.bold.green('\nSetup complete!'));
   console.log(`Agents are ready in ${chalk.cyan('.claude/agents/')}\n`);
