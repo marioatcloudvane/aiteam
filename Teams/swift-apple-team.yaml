@@ -1,12 +1,12 @@
 name: Swift Apple Team
 description: Full-stack team for iOS/macOS/visionOS/watchOS applications
+claude_md: Teams/swift-apple/CLAUDE.md
 
 core:
   - id: proxy-product-owner
     file: Support/ProductOwner/proxy-product-owner.md
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
-  # orchestrator coming soon
 
 architects:
   - id: swift-app-architect

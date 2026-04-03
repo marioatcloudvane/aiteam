@@ -29,4 +29,4 @@ async function fetchAgentFile(filePath) {
   return fetchRaw(filePath);
 }
 
-module.exports = { fetchTeams, fetchTeamConfig, fetchAgentFile };
+module.exports = { fetchRaw, fetchTeams, fetchTeamConfig, fetchAgentFile };

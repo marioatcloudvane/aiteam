@@ -6,7 +6,6 @@ core:
     file: Support/ProductOwner/proxy-product-owner.md
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
-  # orchestrator coming soon
 
 architects:
   - id: python-saas-architect

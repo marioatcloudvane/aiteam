@@ -25,7 +25,7 @@ async function main() {
   const settings = await collectSettings();
 
   console.log(`\nInstalling ${agents.length} agent(s)...`);
-  await installAgents(agents, settings);
+  await installAgents(agents, teamConfig, settings);
 
   console.log(chalk.bold.green('\nSetup complete!'));
   console.log(`Agents are ready in ${chalk.cyan('.claude/agents/')}\n`);
