@@ -5,22 +5,63 @@ claude_md: Teams/swift-apple/CLAUDE.md
 core:
   - id: proxy-product-owner
     file: Support/ProductOwner/proxy-product-owner.md
+    role: product-owner
+    models:
+      claude: opus
+      openai: gpt-4o
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
+    role: requirements
+    models:
+      claude: opus
+      openai: gpt-4o
 
 architects:
   - id: swift-app-architect
     file: Teams/swift-apple/swift-app-architect.md
+    role: architect
     default: true
+    models:
+      claude: opus
+      openai: gpt-4o
 
 developers:
   - id: swift-implementation-engineer
     file: Teams/swift-apple/swift-implementation-engineer.md
+    role: developer
     default: true
+    models:
+      claude: opus
+      openai: gpt-4o
 
-testers: []
+testers:
+  - id: swift-test-manager
+    file: Teams/swift-apple/swift-test-manager.md
+    role: test-manager
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: swift-unit-test-engineer
+    file: Teams/swift-apple/swift-unit-test-engineer.md
+    role: unit-tester
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
+  - id: swift-ui-automation-test-engineer
+    file: Teams/swift-apple/swift-ui-automation-test-engineer.md
+    role: ui-tester
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
 
 support:
   - id: principal-designer
     file: Support/Designers/principal-designer.md
+    role: designer
     default: false
+    models:
+      claude: opus
+      openai: gpt-4o

@@ -4,7 +4,7 @@ const { selectTeam, selectAgents } = require('./prompts');
 const { collectSettings } = require('./settings');
 const { installAgents } = require('./install');
 
-async function main() {
+async function main(llmTarget) {
   console.log(chalk.bold('\nAITeam Setup\n'));
   console.log('Fetching available teams...');
 
@@ -25,13 +25,10 @@ async function main() {
   const settings = await collectSettings();
 
   console.log(`\nInstalling ${agents.length} agent(s)...`);
-  await installAgents(agents, teamConfig, settings);
+  await installAgents(agents, teamConfig, settings, llmTarget);
 
   console.log(chalk.bold.green('\nSetup complete!'));
   console.log(`Agents are ready in ${chalk.cyan('.claude/agents/')}\n`);
 }
 
-main().catch(err => {
-  console.error(chalk.red('\nError: ' + err.message));
-  process.exit(1);
-});
+module.exports = { main };

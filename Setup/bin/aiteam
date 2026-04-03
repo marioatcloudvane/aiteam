@@ -1,2 +1,19 @@
 #!/usr/bin/env node
-require('../src/cli');
+
+const [,, command, target] = process.argv;
+
+if (command === 'init' && target === 'claude') {
+  const { main } = require('../src/cli');
+  main('claude').catch(err => {
+    const chalk = require('chalk');
+    console.error(chalk.red('\nError: ' + err.message));
+    process.exit(1);
+  });
+} else if (command === 'init' && target !== undefined) {
+  console.error(`Unknown target "${target}". Currently only "claude" is supported.`);
+  console.error('Usage: aiteam init claude');
+  process.exit(1);
+} else {
+  console.error('Usage: aiteam init claude');
+  process.exit(1);
+}

@@ -38,6 +38,7 @@ function buildRoster(agents, agentsDir) {
     lines.push(`## ${displayName}`);
     lines.push('');
     lines.push(`- **ID:** ${agent.id}`);
+    if (agent.role) lines.push(`- **Role:** ${agent.role}`);
     lines.push(`- **File:** .claude/agents/${filename}`);
     if (description) {
       // description can be very long — truncate to first sentence for the roster

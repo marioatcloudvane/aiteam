@@ -2,13 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const { fetchAgentFile } = require('./fetch');
-const { processTemplate } = require('./template');
+const { buildRoleMap, processTemplate } = require('./template');
 const { writeRoster } = require('./roster');
 const { generateClaudeMd } = require('./claudemd');
 
 const AGENTS_DIR = path.join(process.cwd(), '.claude', 'agents');
 
-async function installAgents(agents, teamConfig, settings = {}) {
+async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'claude') {
   if (!fs.existsSync(AGENTS_DIR)) {
     fs.mkdirSync(AGENTS_DIR, { recursive: true });
     console.log(chalk.gray(`\nCreated .claude/agents/`));
@@ -17,6 +17,7 @@ async function installAgents(agents, teamConfig, settings = {}) {
   }
 
   const selectedIds = agents.map(a => a.id);
+  const roleMap     = buildRoleMap(agents);
 
   // Download all agent files first
   for (const agent of agents) {
@@ -27,7 +28,8 @@ async function installAgents(agents, teamConfig, settings = {}) {
     console.log(chalk.green(' done'));
   }
 
-  // Build roster (reads written files for frontmatter)
+  // Build roster (reads written files for frontmatter — before template processing
+  // so frontmatter is still raw; roster only reads name/description, not model)
   process.stdout.write(`\n  Generating AGENT_ROSTER.md...`);
   const rosterContent = writeRoster(agents, AGENTS_DIR);
   console.log(chalk.green(' done'));
@@ -35,16 +37,18 @@ async function installAgents(agents, teamConfig, settings = {}) {
   // Process templates in all agent files
   process.stdout.write(`  Processing agent templates...`);
   for (const agent of agents) {
-    const filename = path.basename(agent.file);
-    const filePath = path.join(AGENTS_DIR, filename);
-    const raw = fs.readFileSync(filePath, 'utf8');
-    const processed = processTemplate(raw, selectedIds, rosterContent, settings);
+    const filename  = path.basename(agent.file);
+    const filePath  = path.join(AGENTS_DIR, filename);
+    const raw       = fs.readFileSync(filePath, 'utf8');
+    const model     = (agent.models ?? {})[llmTarget] ?? '';
+    const variables = { model };
+    const processed = processTemplate(raw, selectedIds, rosterContent, settings, roleMap, variables);
     fs.writeFileSync(filePath, processed, 'utf8');
   }
   console.log(chalk.green(' done'));
 
   // Generate CLAUDE.md from team template
-  await generateClaudeMd(teamConfig, selectedIds, rosterContent, settings);
+  await generateClaudeMd(teamConfig, selectedIds, rosterContent, settings, roleMap);
 }
 
 module.exports = { installAgents };
