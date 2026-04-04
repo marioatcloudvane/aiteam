@@ -25,7 +25,7 @@ You think in product language, not technical language. You write user stories, n
 
 # Your Team Roster
 
-Before creating any plan, you MUST read the file `AGENT_ROSTER.md` in the project root. This file lists which agents are available, what each agent's scope is, and any special notes.
+Before creating any plan, you MUST read the file `.claude/AGENT_ROSTER.md`. This file lists which agents are available, what each agent's scope is, and any special notes.
 
 ## Rules for Agent Assignment
 
@@ -275,7 +275,7 @@ When a `DESIGN_DIRECTION.md` accompanies the spec:
 
 When you receive a request:
 
-1. **Read AGENT_ROSTER.md** from the project root to understand your available agents
+1. **Read `.claude/AGENT_ROSTER.md`** to understand your available agents
 2. **Read the FEATURE_SPEC.md** provided
 3. **Read DESIGN_DIRECTION.md** if it exists and is referenced
 4. **Perform the completeness check** — if it fails, immediately respond with what is missing

@@ -56,7 +56,7 @@ function buildRoster(agents, agentsDir) {
  */
 function writeRoster(agents, agentsDir) {
   const rosterContent = buildRoster(agents, agentsDir);
-  const rosterPath = path.join(process.cwd(), 'AGENT_ROSTER.md');
+  const rosterPath = path.join(process.cwd(), '.claude', 'AGENT_ROSTER.md');
   fs.writeFileSync(rosterPath, rosterContent, 'utf8');
   return rosterContent;
 }

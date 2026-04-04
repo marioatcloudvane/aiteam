@@ -11,7 +11,7 @@ async function generateClaudeMd(teamConfig, selectedAgentIds, rosterContent, set
 
   const raw = await fetchRaw(teamConfig.claude_md);
   const processed = processTemplate(raw, selectedAgentIds, rosterContent, settings, roleMap);
-  fs.writeFileSync(path.join(process.cwd(), 'CLAUDE.md'), processed, 'utf8');
+  fs.writeFileSync(path.join(process.cwd(), '.claude', 'CLAUDE.md'), processed, 'utf8');
 
   console.log(chalk.green(' done'));
 }

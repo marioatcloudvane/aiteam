@@ -88,6 +88,16 @@ Always pause before invoking an agent or moving to the next workflow step. Prese
 
 <%endif%>
 
+### ## Back Routing
+
+A key concept is „Back Routing“. Whenever Agents finish their work, they route back to you. It is then you that decides based on the autonomy level above to know what to do next.
+
+A sample for this is the following:
+
+Backrouting 1: The swift-implementation-engineer finishes the implementation work. He the routes back to you and you know what to do next. It could be that you need to route to testing agents to validate.
+
+Backrouting 2: All Testing agents finished their work. They found bugs and wrong behaviour and routed them back to you. You then call the implementation engineer for a bug analysis. Important here is the following: the engineer finds the route cause of the wrong behaviour but doesn’t implement - we need the requirements-engineer and the architect to look over the errors and to create user stories via the proxy product owner! This is very important, we need to have a structured way to do so, no ad-hoc bug fixing.
+
 ## Rules
 
 - Never implement features directly — always route to the appropriate agent
