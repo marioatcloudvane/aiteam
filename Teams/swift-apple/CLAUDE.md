@@ -28,6 +28,14 @@ When a feature needs UX direction, interaction design, or visual design decision
 
 <%endif%>
 
+<%if agent "apple-app-store-preparer">
+
+### App Store preparation
+
+When the user is happy with the App, use the apple-app-store-preparer to prepare for the submission.
+
+<%endif%>
+
 ## Workflow
 
 The standard flow is always:
@@ -51,6 +59,12 @@ Step 5: swift-test-manager** → writes the test cases from the spec that the *
 Step 6: swift-test-engineer** → writes the unit tests provided by the **swift-test-manager  created
 
 **Step 7: swift-integration-test-engineer** → creates the unit tests the **swift-test-manager** created
+
+<%if agent "apple-app-store-preparer">
+
+**Step 8: apple-app-store-preparer** → creates the app store submission document
+
+<%endif%>
 
 ### Edge cases:
 
