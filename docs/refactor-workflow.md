@@ -1,12 +1,13 @@
 # AI Team Refactor — Workflow Sketch (in progress)
 
 Working branch: `claude/ai-team-workflow-design-Laxi0`
-Last touched: 2026-05-18
+Last touched: 2026-05-19
 
 ## Status
 
-Workflow shape agreed. Implementation not started.
-**Three follow-up questions open — resume at the bottom of this file.**
+Workflow shape agreed. Step (a) scaffolding landed: new `Core/`, `Modes/`, `Skills/` directories; mode orchestrator skeletons (with frontmatter) under `Modes/<mode>/orchestrator.md`; team YAMLs updated with `modes: [...]` per agent and orchestrator entries; new top-level `Core/CLAUDE.md` mode-router template. Orchestrator prompt bodies are skeletons — flesh out in (b). Old `Teams/swift-apple/CLAUDE.md` and the workflow-tail boilerplate in existing agent files are still in place; removed in (c).
+
+**Two follow-up questions open — resume at the bottom of this file.**
 
 ---
 
@@ -86,13 +87,19 @@ Today's "Bug Flow" collapses into: small bugs → Spike; ambiguous/multi-bug →
 
 ---
 
-## Open questions — RESUME HERE
+## What landed in (a)
 
-### a. Repo file/folder refactor
-What moves where? Proposal: introduce a new `Modes/` directory holding the shared mode orchestrators. `Teams/` shrinks now that workflow logic leaves the team YAML. New `CLAUDE.md` template becomes a mode router rather than a feature pipeline. Concrete file diff still to draft.
+- New `Core/` — `CLAUDE.md` (mode router), `manifest.template.md`, `config.template.yaml`.
+- New `Modes/` — `research/`, `plan/`, `implement/` each with `orchestrator.md` (skeleton with frontmatter) + `README.md`; `spike/README.md` (no orchestrator, escape-hatch conventions).
+- New `Skills/README.md` — placeholder, populated in (b).
+- New `docs/modes.md` — user-facing documentation of the four modes.
+- `Teams/swift-apple-team.yaml` and `Teams/python-saas-team.yaml` — `modes: [...]` per agent; orchestrator entries added; `claude_md:` now points to `Core/CLAUDE.md`.
+- Design choices baked in: orchestrators are **real sub-agents** (decision B); `Support/` stays where it is with `modes:` as a list (so `principal-designer` can serve both Research and Plan).
+
+## Still open — RESUME HERE
 
 ### b. Sub-agent + skill breakdown per mode
-The original goal of this refactor. For each of Research, Plan, Implement: which sub-agents, which skills, and how team context plugs in via skills.
+The original goal of this refactor. For each of Research, Plan, Implement: flesh out the orchestrator prompt bodies (currently skeletons), define the choreography between specialist sub-agents, decide what lives in `Skills/` and how team context is injected. This is also where the workflow tails currently embedded in existing agent prompts get stripped (since the orchestrator now owns workflow).
 
 ### c. Backwards compat / migration
-The swift-apple team's existing `CLAUDE.md` is real prose people have read. Cut over, or run both shapes for a release?
+The swift-apple team's existing `Teams/swift-apple/CLAUDE.md` is real prose people have read. Cut over and delete, or run both shapes for a release? Also covers updates to `Setup/src/claudemd.js` and `Setup/src/install.js` so the installer assembles the new shape (template `<%roster%>` injection into `Core/CLAUDE.md`, `.aiteam/` scaffolding on first run).

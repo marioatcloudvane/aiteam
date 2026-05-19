@@ -1,17 +1,19 @@
 name: Swift Apple Team
 description: Full-stack team for iOS/macOS/visionOS/watchOS applications
-claude_md: Teams/swift-apple/CLAUDE.md
+claude_md: Core/CLAUDE.md
 
 core:
   - id: proxy-product-owner
     file: Support/ProductOwner/proxy-product-owner.md
     role: product-owner
+    modes: [plan]
     models:
       claude: opus
       openai: gpt-4o
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
     role: requirements
+    modes: [research]
     models:
       claude: opus
       openai: gpt-4o
@@ -20,6 +22,7 @@ architects:
   - id: swift-app-architect
     file: Teams/swift-apple/swift-app-architect.md
     role: architect
+    modes: [plan]
     default: true
     models:
       claude: opus
@@ -29,6 +32,7 @@ developers:
   - id: swift-implementation-engineer
     file: Teams/swift-apple/swift-implementation-engineer.md
     role: developer
+    modes: [implement]
     default: true
     models:
       claude: opus
@@ -38,6 +42,7 @@ testers:
   - id: swift-test-manager
     file: Teams/swift-apple/swift-test-manager.md
     role: test-manager
+    modes: [implement]
     default: true
     models:
       claude: opus
@@ -45,6 +50,7 @@ testers:
   - id: swift-unit-test-engineer
     file: Teams/swift-apple/swift-unit-test-engineer.md
     role: unit-tester
+    modes: [implement]
     default: true
     models:
       claude: sonnet
@@ -52,15 +58,43 @@ testers:
   - id: swift-ui-automation-test-engineer
     file: Teams/swift-apple/swift-ui-automation-test-engineer.md
     role: ui-tester
+    modes: [implement]
     default: true
     models:
       claude: sonnet
       openai: gpt-4o-mini
 
+orchestrators:
+  - id: research-orchestrator
+    file: Modes/research/orchestrator.md
+    role: research-orchestrator
+    modes: [research]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: plan-orchestrator
+    file: Modes/plan/orchestrator.md
+    role: plan-orchestrator
+    modes: [plan]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: implement-orchestrator
+    file: Modes/implement/orchestrator.md
+    role: implement-orchestrator
+    modes: [implement]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+
 support:
   - id: principal-designer
     file: Support/Designers/principal-designer.md
     role: designer
+    modes: [research, plan]
     default: false
     models:
       claude: opus

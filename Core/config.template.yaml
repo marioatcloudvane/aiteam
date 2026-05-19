@@ -1,0 +1,9 @@
+# .aiteam/config.yaml — feature-tag scheme + per-project AI Team settings
+
+tagging:
+  scheme: slug         # semver | ticket | slug | date | custom
+  prefix: ""           # optional, e.g. "v" or "PROJ-"
+  ask_on_start: true   # prompt for tag at the start of each new piece of work
+
+autonomy:
+  level: balanced      # auto | balanced | hil

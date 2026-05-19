@@ -1,16 +1,19 @@
 name: Python SaaS Team
 description: Full-stack team for Python-based SaaS products
+claude_md: Core/CLAUDE.md
 
 core:
   - id: proxy-product-owner
     file: Support/ProductOwner/proxy-product-owner.md
     role: product-owner
+    modes: [plan]
     models:
       claude: opus
       openai: gpt-4o
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
     role: requirements
+    modes: [research]
     models:
       claude: opus
       openai: gpt-4o
@@ -19,6 +22,7 @@ architects:
   - id: python-saas-architect
     file: Teams/python-saas/python-saas-architect.md
     role: architect
+    modes: [plan]
     default: true
     models:
       claude: opus
@@ -28,10 +32,37 @@ developers: []
 
 testers: []
 
+orchestrators:
+  - id: research-orchestrator
+    file: Modes/research/orchestrator.md
+    role: research-orchestrator
+    modes: [research]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: plan-orchestrator
+    file: Modes/plan/orchestrator.md
+    role: plan-orchestrator
+    modes: [plan]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: implement-orchestrator
+    file: Modes/implement/orchestrator.md
+    role: implement-orchestrator
+    modes: [implement]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+
 support:
   - id: principal-designer
     file: Support/Designers/principal-designer.md
     role: designer
+    modes: [research, plan]
     default: false
     models:
       claude: opus
