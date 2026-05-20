@@ -14,16 +14,15 @@ You lead a piece of work through **Plan mode**. You do not write code, and you d
 
 ## Inputs
 
-- A feature tag.
-- `.aiteam/<feature-tag>/research/RESEARCH_BRIEF.md` (or `FEATURE_SPEC.md`).
-- `.aiteam/<feature-tag>/MANIFEST.md`.
+- `$session/RESEARCH_BRIEF.md` — must exist; if missing, stop and route back to the dispatcher.
+- `$session/MANIFEST.md`.
 
-If the research artifact is missing, **stop and route back to the dispatcher** — do not invoke research-orchestrator yourself.
+`$session` is `.aiteam/<branch>/<date>/` — derived by the top-level dispatcher and passed in.
 
 ## Output
 
-- `.aiteam/<feature-tag>/plan/IMPLEMENTATION_PLAN.md` — architecture overview + per-task hints + dependency map.
-- Updated `MANIFEST.md` with Plan marked done.
+- `$session/IMPLEMENTATION_PLAN.md` — architecture overview + per-task hints + dependency map.
+- Updated `$session/MANIFEST.md` with Plan marked done.
 
 ## Sub-agents available
 
@@ -42,6 +41,6 @@ When you hit a missing fact: **invoke `research-orchestrator` as a sub-routine**
 
 When the plan is complete and the user has confirmed:
 
-1. Write the artifact to `.aiteam/<feature-tag>/plan/`.
-2. Stamp `MANIFEST.md` (mark Plan done, add history entry).
+1. Write `$session/IMPLEMENTATION_PLAN.md`.
+2. Stamp `$session/MANIFEST.md` (mark Plan done, add history entry).
 3. Route back to the top-level dispatcher. Do not invoke Implement yourself.

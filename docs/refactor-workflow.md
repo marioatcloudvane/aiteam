@@ -47,32 +47,29 @@ Workflow shape agreed. Step (a) scaffolding landed: new `Core/`, `Modes/`, `Skil
         └────── promote (asks first) ──────┘
 ```
 
-## Proposed artifact layout
+## Artifact layout
 
 ```
 .aiteam/
-├── <feature-tag>/                  # e.g. v1.2.0, PROJ-123, user-profile, 2026-05-18
-│   ├── MANIFEST.md                 # status, links, mode history
-│   ├── research/
-│   │   └── RESEARCH_BRIEF.md       # or FEATURE_SPEC.md for user-facing work
-│   ├── plan/
-│   │   └── IMPLEMENTATION_PLAN.md  # arch + tasks
-│   ├── implement/
-│   │   ├── TEST_PLAN.md            # written by test-manager in parallel
-│   │   └── notes.md                # detour findings, blockers, decisions
-│   └── spike/                      # only if a spike was promoted from here
-│       └── findings.md
-└── config.yaml                     # team config + tagging scheme
+├── <branch>/                       # sanitised git branch name (slashes → hyphens)
+│   └── <date>/                     # YYYY-MM-DD — one directory per branch+day
+│       ├── MANIFEST.md             # mode status + history for this session
+│       ├── RESEARCH_BRIEF.md       # produced by research-orchestrator
+│       ├── IMPLEMENTATION_PLAN.md  # produced by plan-orchestrator
+│       ├── TEST_PLAN.md            # produced by test-manager (implement mode)
+│       ├── notes.md                # detour findings, blockers, decisions
+│       └── spike.md                # only if a spike was promoted
+└── config.yaml                     # team config (autonomy level, rulebook path)
 ```
 
-`.aiteam/config.yaml` sketch:
-
-```yaml
-tagging:
-  scheme: semver       # semver | ticket | slug | date | custom
-  prefix: ""           # optional, e.g. "v" or "PROJ-"
-  ask_on_start: true   # prompt for tag at the start of each new piece of work
+Session path is derived automatically — no user input:
 ```
+branch=$(git rev-parse --abbrev-ref HEAD | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+date=$(date +%Y-%m-%d)
+session=".aiteam/$branch/$date"
+```
+
+All artifacts for a session are flat inside the session directory — no mode-based sub-folders. Multiple runs on the same branch+day share the directory; a new branch or new day always produces a fresh one. Zero merge conflicts: different branches always produce different paths.
 
 ## Mapping today's agents to modes
 

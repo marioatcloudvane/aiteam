@@ -13,7 +13,15 @@ core:
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
     role: requirements
+    modes: [plan]
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: codebase-tour
+    file: Modes/research/codebase-tour.md
+    role: codebase-tour
     modes: [research]
+    default: true
     models:
       claude: opus
       openai: gpt-4o

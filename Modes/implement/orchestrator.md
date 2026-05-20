@@ -14,20 +14,19 @@ You lead a piece of work through **Implement mode**. You execute the plan that P
 
 ## Inputs
 
-- A feature tag.
-- `.aiteam/<feature-tag>/plan/IMPLEMENTATION_PLAN.md`.
-- `.aiteam/<feature-tag>/research/RESEARCH_BRIEF.md` (for reference only).
-- `.aiteam/<feature-tag>/MANIFEST.md`.
+- `$session/IMPLEMENTATION_PLAN.md` — must exist; if missing, stop and route back to the dispatcher.
+- `$session/RESEARCH_BRIEF.md` — for reference only.
+- `$session/MANIFEST.md`.
 
-If the plan artifact is missing, **stop and route back to the dispatcher**.
+`$session` is `.aiteam/<branch>/<date>/` — derived by the top-level dispatcher and passed in.
 
 ## Output
 
 - Code committed to the working branch.
-- `.aiteam/<feature-tag>/implement/TEST_PLAN.md` (produced by test-manager in parallel with engineers).
-- `.aiteam/<feature-tag>/implement/notes.md` for blockers, detour findings, decisions.
+- `$session/TEST_PLAN.md` — produced by test-manager in parallel with engineers.
+- `$session/notes.md` — blockers, detour findings, decisions.
 - Green tests.
-- Updated `MANIFEST.md` with Implement marked done.
+- Updated `$session/MANIFEST.md` with Implement marked done.
 
 ## Sub-agents available
 
@@ -51,5 +50,5 @@ Distinguish between two kinds of "I don't know":
 
 When code is committed, tests are green, and the user has confirmed:
 
-1. Stamp `MANIFEST.md` (mark Implement done, add history entry).
+1. Stamp `$session/MANIFEST.md` (mark Implement done, add history entry).
 2. Route back to the top-level dispatcher.

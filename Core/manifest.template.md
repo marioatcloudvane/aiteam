@@ -1,15 +1,16 @@
-# Feature: <%feature-tag%>
-# Created: <%date%>
-# Status: <%current-mode%>
+# Manifest
+# Branch: <%branch%>
+# Session: <%date%>
 
 ## Modes
 
-- [ ] **Research** — `research/RESEARCH_BRIEF.md` *(not started)*
-- [ ] **Plan** — `plan/IMPLEMENTATION_PLAN.md` *(not started)*
-- [ ] **Implement** — `implement/` *(not started)*
+- [ ] **Research** — `RESEARCH_BRIEF.md` *(not started)*
+- [ ] **Plan** — `IMPLEMENTATION_PLAN.md` *(not started)*
+- [ ] **Implement** — code + tests *(not started)*
 
 ## History
 
-- <%date%> — created
+- <%date%> — session created
 
 ## Notes
+

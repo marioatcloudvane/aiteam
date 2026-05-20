@@ -4,7 +4,7 @@ This project is managed by an AI team operating in four modes. Every request is 
 
 ## Modes
 
-- **Research** — understand the problem before solving it. Output: a research brief / feature spec.
+- **Research** — understand the problem before solving it. Output: a research brief.
 - **Plan** — turn an approved brief into a concrete plan. Output: an implementation plan.
 - **Implement** — execute the plan. Output: code + tests, green.
 - **Spike** — time-boxed escape hatch for ad-hoc requests. No orchestrator. Asks before promoting.
@@ -31,28 +31,36 @@ Once a mode is chosen:
 - **Research** → invoke `research-orchestrator`
 - **Plan** → invoke `plan-orchestrator`
 - **Implement** → invoke `implement-orchestrator`
-- **Spike** → handle directly here. Lightweight, time-boxed. Drop a one-line note in `.aiteam/<feature-tag>/spike/findings.md` if useful. When done, ask whether to promote (Research / Plan / Implement) — never promote silently.
+- **Spike** → handle directly here. Lightweight, time-boxed. Drop a one-line note in `.aiteam/<session>/spike.md` if useful. When done, ask whether to promote (Research / Plan / Implement) — never promote silently.
 
 Never invoke a specialist sub-agent (requirements-engineer, architect, engineer, etc.) directly from this manifest. That is the orchestrator's job.
 
-## Feature Tags & Artifacts
+## Artifacts
 
-All artifacts live under `.aiteam/<feature-tag>/`, with one folder per mode and a `MANIFEST.md` at the feature root tracking status.
+All artifacts live under `.aiteam/<branch>/<date>/`. The path is derived automatically — no user input required:
 
-On a new piece of work that needs an orchestrator (Research / Plan / Implement):
+- `<branch>` — current git branch name, sanitised (slashes → hyphens, lowercased).
+- `<date>` — today's date in `YYYY-MM-DD` format.
 
-1. Read `.aiteam/config.yaml` for the tagging scheme (semver | ticket | slug | date | custom).
-2. Propose a tag for the user (or ask, per `ask_on_start`).
-3. Scaffold `.aiteam/<feature-tag>/MANIFEST.md` from `Core/manifest.template.md` before invoking the orchestrator.
+Example: working on branch `feat/payments` on 2026-05-20 → `.aiteam/feat-payments/2026-05-20/`
 
-Spike does not require a feature tag or manifest unless it gets promoted.
+To derive the session path:
+```
+branch=$(git rev-parse --abbrev-ref HEAD | tr '/' '-' | tr '[:upper:]' '[:lower:]')
+date=$(date +%Y-%m-%d)
+session=".aiteam/$branch/$date"
+```
+
+On a new piece of work, scaffold `$session/MANIFEST.md` from `Core/manifest.template.md` before invoking the orchestrator. Spike does not require a session directory unless promoted.
+
+Multiple runs on the same branch on the same day share a session directory — artifacts are overwritten, not duplicated. A new day or a new branch always produces a fresh directory.
 
 ## Mode Gates
 
-A mode can only be entered when its prerequisite artifact exists:
+A mode can only be entered when its prerequisite artifact exists in the current session:
 
-- **Plan** requires `.aiteam/<feature-tag>/research/RESEARCH_BRIEF.md` (or `FEATURE_SPEC.md`).
-- **Implement** requires `.aiteam/<feature-tag>/plan/IMPLEMENTATION_PLAN.md`.
+- **Plan** requires `$session/RESEARCH_BRIEF.md`.
+- **Implement** requires `$session/IMPLEMENTATION_PLAN.md`.
 - **Research** has no prerequisite.
 - **Spike** has no prerequisite.
 
