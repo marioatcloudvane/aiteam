@@ -96,7 +96,20 @@ Today's "Bug Flow" collapses into: small bugs → Spike; ambiguous/multi-bug →
 ## Still open — RESUME HERE
 
 ### b. Sub-agent + skill breakdown per mode
-The original goal of this refactor. For each of Research, Plan, Implement: flesh out the orchestrator prompt bodies (currently skeletons), define the choreography between specialist sub-agents, decide what lives in `Skills/` and how team context is injected. This is also where the workflow tails currently embedded in existing agent prompts get stripped (since the orchestrator now owns workflow).
+The original goal of this refactor. **Research** and **Plan** modes are now fully fleshed out (see below). Implement mode choreography (scanner exit gates, parallel test-manager + engineer phasing, bug-flow handling) is still TBD.
+
+**What landed in (b) so far:**
+- `Modes/research/orchestrator.md` — concrete 5-step choreography; codebase-tour + principal-designer sub-agents.
+- `Modes/research/codebase-tour.md` — Two-Pass Codebase Tour as a Research mode sub-agent; infers + invokes scanners; returns findings inline.
+- `Skills/shared/architecture-scanner.md`, `security-scanner.md`, `testing-scanner.md` — scanner skills with rulebook lookup.
+- `Teams/rulebook.template.md` — template for team rulebooks.
+- `Modes/plan/orchestrator.md` — two entry paths (with/without research brief); RE + architect choreography; IMPLEMENTATION_PLAN.md format enforced.
+- `Support/Requirements/requirements-engineer.md` — updated to read research brief, pre-fill from it, ask only about gaps; tighter output format.
+- `Skills/swift/platform-constraints.md`, `Skills/python/platform-constraints.md` — platform constraint skills for architect role-switching review.
+- `Skills/shared/task-decomposer.md` — task breakdown with types, dependencies, estimates.
+
+### d. App feature registry *(parked)*
+A persistent, long-lived registry of what features the app already has — neither research nor planning produces this today. The idea: a background task that keeps `APP_FEATURES.md` (or similar) up to date so Plan mode can read it and skip re-researching existing functionality. Not straightforward to maintain automatically; needs design work. Park until Research + Plan + Implement are stable.
 
 ### c. Backwards compat / migration
 The swift-apple team's existing `Teams/swift-apple/CLAUDE.md` is real prose people have read. Cut over and delete, or run both shapes for a release? Also covers updates to `Setup/src/claudemd.js` and `Setup/src/install.js` so the installer assembles the new shape (template `<%roster%>` injection into `Core/CLAUDE.md`, `.aiteam/` scaffolding on first run).
