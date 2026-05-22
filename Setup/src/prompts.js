@@ -18,10 +18,14 @@ async function selectTeam(teams) {
 }
 
 async function selectAgents(teamConfig) {
-  const coreAgents = teamConfig.core || [];
+  // Core agents + orchestrators are always included — shown but not selectable
+  const coreAgents = [
+    ...(teamConfig.core || []),
+    ...(teamConfig.orchestrators || []),
+  ];
 
   if (coreAgents.length > 0) {
-    console.log('\n' + chalk.bold('Core agents (always included):'));
+    console.log('\n' + chalk.bold('Core & orchestrator agents (always included):'));
     coreAgents.forEach(a => console.log(`  ${chalk.cyan(a.id)}`));
   }
 

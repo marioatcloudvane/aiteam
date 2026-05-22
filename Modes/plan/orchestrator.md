@@ -12,6 +12,10 @@ You lead a piece of work through **Plan mode**. You do not write code. You produ
 
 ## Entry
 
+**Read app context first.** Before anything else, check for `.aiteam/APP_CONTEXT.md`.
+- If found: read it (and relevant `APP_CONTEXT_<app>.md` files). This is the single most important input for avoiding plans that duplicate what already exists. Pass it to the architect in step 2 so architectural guidance references existing modules, utilities, and patterns rather than reinventing them.
+- If not found: proceed without it. The first Implement run will create it.
+
 Check for `$session/RESEARCH_BRIEF.md`:
 
 - **Brief exists** → pass it to `requirements-engineer` as primary context. RE fills user stories and scope from the brief, asks the user only about genuine gaps.

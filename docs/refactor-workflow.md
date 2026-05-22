@@ -96,7 +96,7 @@ Today's "Bug Flow" collapses into: small bugs → Spike; ambiguous/multi-bug →
 ## Still open — RESUME HERE
 
 ### b. Sub-agent + skill breakdown per mode
-The original goal of this refactor. **Research** and **Plan** modes are now fully fleshed out (see below). Implement mode choreography (scanner exit gates, parallel test-manager + engineer phasing, bug-flow handling) is still TBD.
+The original goal of this refactor. **Research**, **Plan**, and **Implement** modes are now fully fleshed out.
 
 **What landed in (b) so far:**
 - `Modes/research/orchestrator.md` — concrete 5-step choreography; codebase-tour + principal-designer sub-agents.
@@ -107,6 +107,12 @@ The original goal of this refactor. **Research** and **Plan** modes are now full
 - `Support/Requirements/requirements-engineer.md` — updated to read research brief, pre-fill from it, ask only about gaps; tighter output format.
 - `Skills/swift/platform-constraints.md`, `Skills/python/platform-constraints.md` — platform constraint skills for architect role-switching review.
 - `Skills/shared/task-decomposer.md` — task breakdown with types, dependencies, estimates.
+- `Modes/implement/orchestrator.md` — **fully implemented**: 4-phase choreography (parallel dev + test-manager → environment gate → parallel test engineers → bug loop), Gate A + Gate B, 2-cycle bug loop with escalation report.
+- `Skills/shared/environment-validator.md` — pre-tool hook script + settings.json config that blocks test commands against unvalidated or production environments.
+- `Teams/python-saas/python-saas-test-manager.md` — produces TEST_PLAN.md with three sections: unit / API integration / UI (Playwright).
+- `Teams/python-saas/python-saas-unit-test-engineer.md` — writes and runs pytest unit tests (all deps mocked).
+- `Teams/python-saas/python-saas-integration-test-engineer.md` — writes and runs pytest + httpx integration tests against real test DB; includes tenant isolation patterns.
+- `Teams/python-saas/python-saas-ui-test-engineer.md` — writes and runs Playwright Python UI tests; session-level auth state reuse; never hardcodes credentials.
 
 ### d. App feature registry *(parked)*
 A persistent, long-lived registry of what features the app already has — neither research nor planning produces this today. The idea: a background task that keeps `APP_FEATURES.md` (or similar) up to date so Plan mode can read it and skip re-researching existing functionality. Not straightforward to maintain automatically; needs design work. Park until Research + Plan + Implement are stable.

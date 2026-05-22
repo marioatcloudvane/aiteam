@@ -21,7 +21,13 @@ core:
     file: Modes/research/codebase-tour.md
     role: codebase-tour
     modes: [research]
-    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: app-context-updater
+    file: Skills/shared/app-context-updater.md
+    role: app-context-updater
+    modes: [research, implement]
     models:
       claude: opus
       openai: gpt-4o

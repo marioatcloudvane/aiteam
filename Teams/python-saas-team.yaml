@@ -21,7 +21,13 @@ core:
     file: Modes/research/codebase-tour.md
     role: codebase-tour
     modes: [research]
-    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: app-context-updater
+    file: Skills/shared/app-context-updater.md
+    role: app-context-updater
+    modes: [research, implement]
     models:
       claude: opus
       openai: gpt-4o
@@ -36,9 +42,49 @@ architects:
       claude: opus
       openai: gpt-4o
 
-developers: []
+developers:
+  - id: python-saas-implementation-engineer
+    file: Teams/python-saas/python-saas-implementation-engineer.md
+    role: developer
+    modes: [implement]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
 
-testers: []
+testers:
+  - id: python-saas-test-manager
+    file: Teams/python-saas/python-saas-test-manager.md
+    role: test-manager
+    modes: [implement]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
+  - id: python-saas-unit-test-engineer
+    file: Teams/python-saas/python-saas-unit-test-engineer.md
+    role: unit-tester
+    modes: [implement]
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
+  - id: python-saas-integration-test-engineer
+    file: Teams/python-saas/python-saas-integration-test-engineer.md
+    role: integration-tester
+    modes: [implement]
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
+  - id: python-saas-ui-test-engineer
+    file: Teams/python-saas/python-saas-ui-test-engineer.md
+    role: ui-tester
+    modes: [implement]
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
 
 orchestrators:
   - id: research-orchestrator

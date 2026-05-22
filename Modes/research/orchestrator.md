@@ -43,13 +43,17 @@ Invoke for user-facing features where UX direction or interaction design is part
 
 ## Choreography
 
+0. **Read app context.** Check if `.aiteam/APP_CONTEXT.md` exists.
+   - If found: read it (and any `APP_CONTEXT_<app>.md` files relevant to this feature). This tells you what already exists and prevents researching things that are already documented. Pass the content to `codebase-tour` as existing context so it focuses on what is NOT yet captured.
+   - If not found: note this — after Research completes, the Implement orchestrator will create it. Do not block on it.
+
 1. Classify the request: existing codebase work, new domain exploration, or user-facing feature.
 2. Invoke `codebase-tour` if there is existing code to understand.
 3. Invoke `principal-designer` if the feature is user-facing and UX direction is needed.
 4. Synthesise all sub-agent findings into `RESEARCH_BRIEF.md` (see structure below).
 5. Present the brief to the user for confirmation before exiting.
 
-Sub-agents can run in parallel when both are needed.
+Sub-agents (steps 2–3) can run in parallel when both are needed.
 
 ## RESEARCH_BRIEF.md structure
 

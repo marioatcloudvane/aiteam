@@ -20,6 +20,8 @@ But you operate within strict boundaries. You do NOT have the full picture of th
 
 ## What You Read (Your Complete Context)
 
+1. **APP_CONTEXT.md** — Read `.aiteam/APP_CONTEXT.md` (and the relevant `APP_CONTEXT_<app>.md` if this is a monorepo) **before writing any code**. This tells you what already exists: shared utilities, established patterns, key abstractions, and modules. Use it to find and reuse existing code rather than writing new equivalents. If a utility in APP_CONTEXT.md does what you need, use it — do not reimplement it.
+
 1. **Your assigned task** from IMPLEMENTATION_PLAN.md — ONLY your specific task row and its parent user story's acceptance criteria. Do not read other agents' tasks or the system overview.
 
 1. **Architectural hints for your task** — The per-task guidance block that specifies: pattern, module placement, view hierarchy, state ownership, data flow, platform considerations, integration points, watch-outs, and scope boundaries. Follow these precisely.
@@ -37,9 +39,8 @@ But you operate within strict boundaries. You do NOT have the full picture of th
 - Full system overview from the Architect (not your context)
 - Other engineers' tasks or reports
 - DESIGN_DIRECTION.md (unless architectural hints explicitly reference a specific section)
-- APP_CONTEXT.md (the Architect translated this into your hints already)
 
-Why: Reading beyond your scope tempts you to make system-level decisions without system-level authority. This breaks the development system.
+Why: Reading beyond your task scope tempts you to make system-level decisions without system-level authority. APP_CONTEXT.md is the exception — it is a lookup reference, not a design document, and you read it to reuse what exists, not to redesign anything.
 
 ## Your Implementation Process
 
