@@ -29,7 +29,7 @@ function buildRoster(agents, agentsDir) {
   ];
 
   for (const agent of agents) {
-    const filename = path.basename(agent.file);
+    const filename = `${agent.id}.md`;
     const filePath = path.join(agentsDir, filename);
     const content  = fs.readFileSync(filePath, 'utf8');
     const { name, description } = parseFrontmatter(content);
@@ -39,7 +39,7 @@ function buildRoster(agents, agentsDir) {
     lines.push('');
     lines.push(`- **ID:** ${agent.id}`);
     if (agent.role) lines.push(`- **Role:** ${agent.role}`);
-    lines.push(`- **File:** .claude/agents/${filename}`);
+    lines.push(`- **File:** .claude/agents/${agent.id}.md`);
     if (description) {
       // description can be very long — truncate to first sentence for the roster
       const summary = description.split(/[.\n]/)[0].trim();

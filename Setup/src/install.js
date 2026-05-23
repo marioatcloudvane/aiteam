@@ -75,11 +75,13 @@ async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'cla
   const selectedIds = agents.map(a => a.id);
   const roleMap     = buildRoleMap(agents);
 
-  // Download all agent files first
+  // Download all agent files — use agent.id as filename to avoid basename collisions
+  // (e.g. research/orchestrator.md, plan/orchestrator.md, implement/orchestrator.md
+  // all share the basename "orchestrator.md" and would overwrite each other)
   for (const agent of agents) {
     process.stdout.write(`  Downloading ${chalk.cyan(agent.id)}...`);
     const raw = await fetchAgentFile(agent.file);
-    const filename = path.basename(agent.file);
+    const filename = `${agent.id}.md`;
     fs.writeFileSync(path.join(AGENTS_DIR, filename), raw, 'utf8');
     console.log(chalk.green(' done'));
   }
@@ -93,7 +95,7 @@ async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'cla
   // Process templates in all agent files
   process.stdout.write(`  Processing agent templates...`);
   for (const agent of agents) {
-    const filename  = path.basename(agent.file);
+    const filename  = `${agent.id}.md`;
     const filePath  = path.join(AGENTS_DIR, filename);
     const raw       = fs.readFileSync(filePath, 'utf8');
     const model     = (agent.models ?? {})[llmTarget] ?? '';
@@ -102,6 +104,21 @@ async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'cla
     fs.writeFileSync(filePath, processed, 'utf8');
   }
   console.log(chalk.green(' done'));
+
+  // Download skill files — these are read as documents by agents at runtime,
+  // not invoked as sub-agents. Install at their original relative paths so
+  // all path references inside agent prompts resolve without modification.
+  const skills = teamConfig.skills || [];
+  if (skills.length > 0) {
+    process.stdout.write(`  Downloading ${skills.length} skill file(s)...`);
+    for (const skillPath of skills) {
+      const raw      = await fetchAgentFile(skillPath);
+      const destPath = path.join(process.cwd(), skillPath);
+      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      fs.writeFileSync(destPath, raw, 'utf8');
+    }
+    console.log(chalk.green(' done'));
+  }
 
   // Generate CLAUDE.md from team template
   await generateClaudeMd(teamConfig, selectedIds, rosterContent, settings, roleMap);

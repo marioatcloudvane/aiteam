@@ -121,3 +121,13 @@ support:
     models:
       claude: opus
       openai: gpt-4o
+
+# Skill files are read as documents by agents at runtime (not invoked as sub-agents).
+# Installed at their original relative paths so in-prompt path references resolve as-is.
+skills:
+  - Skills/shared/architecture-scanner.md
+  - Skills/shared/security-scanner.md
+  - Skills/shared/testing-scanner.md
+  - Skills/shared/task-decomposer.md
+  - Skills/python/platform-constraints.md
+  - Skills/shared/environment-validator.md
