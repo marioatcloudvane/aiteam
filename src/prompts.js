@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 
-const SELECTABLE_CATEGORIES = ['architects', 'developers', 'testers', 'support'];
+const SELECTABLE_CATEGORIES = ['architects', 'developers', 'testers', 'reviewers', 'support'];
 
 async function selectTeam(teams) {
   const { teamId } = await inquirer.prompt([{
@@ -63,4 +63,4 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-module.exports = { selectTeam, selectAgents };
+module.exports = { selectTeam, selectAgents, SELECTABLE_CATEGORIES };

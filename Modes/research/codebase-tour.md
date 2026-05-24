@@ -40,9 +40,9 @@ After Pass 1, infer which of the scanner skills below are relevant to the resear
 
 | Scanner skill | Invoke when |
 |---|---|
-| `Skills/shared/architecture-scanner.md` | Question involves structure, adding modules, layering, or design patterns |
-| `Skills/shared/security-scanner.md` | Question involves auth, user input, data handling, secrets, or external integrations |
-| `Skills/shared/testing-scanner.md` | Question involves test coverage, test infrastructure, or adding tests alongside new code |
+| `.claude/skills/shared/architecture-scanner.md` | Question involves structure, adding modules, layering, or design patterns |
+| `.claude/skills/shared/security-scanner.md` | Question involves auth, user input, data handling, secrets, or external integrations |
+| `.claude/skills/shared/testing-scanner.md` | Question involves test coverage, test infrastructure, or adding tests alongside new code |
 
 For scanners you do **not** invoke: list them in the output with a one-line reason. The user can request them explicitly.
 

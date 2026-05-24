@@ -2,18 +2,28 @@
 
 const [,, command, target] = process.argv;
 
-if (command === 'init' && target === 'claude') {
-  const { main } = require('../src/cli');
-  main('claude').catch(err => {
+const validTargets = ['claude'];
+const usage = 'Usage:\n  aiteam init claude\n  aiteam update claude';
+
+function run(fn) {
+  fn.catch(err => {
     const chalk = require('chalk');
     console.error(chalk.red('\nError: ' + err.message));
     process.exit(1);
   });
-} else if (command === 'init' && target !== undefined) {
+}
+
+if (command === 'init' && target === 'claude') {
+  const { main } = require('../src/cli');
+  run(main('claude'));
+} else if (command === 'update' && target === 'claude') {
+  const { update } = require('../src/cli');
+  run(update('claude'));
+} else if ((command === 'init' || command === 'update') && target !== undefined) {
   console.error(`Unknown target "${target}". Currently only "claude" is supported.`);
-  console.error('Usage: aiteam init claude');
+  console.error(usage);
   process.exit(1);
 } else {
-  console.error('Usage: aiteam init claude');
+  console.error(usage);
   process.exit(1);
 }

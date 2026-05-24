@@ -25,6 +25,38 @@ Read these constraints against the feature spec. For each constraint, determine 
 - **Flag if:** the feature touches multiple tables in one logical operation → explicit transaction required.
 - **Flag if:** the feature adds a new column to an existing table → migration must be safe for a live database.
 
+**N+1 — do this, not that:**
+```python
+# Wrong — fires one query per project
+projects = await session.execute(select(Project))
+for p in projects.scalars():
+    print(p.owner.name)   # lazy load, N queries
+
+# Correct — one query with join
+stmt = select(Project).options(selectinload(Project.owner))
+projects = await session.execute(stmt)
+```
+
+**Migration safety — safe NOT NULL addition:**
+```python
+# Step 1: add nullable (deploy this first)
+op.add_column("projects", sa.Column("slug", sa.String(), nullable=True))
+
+# Step 2: backfill in a data migration (separate Alembic revision)
+op.execute("UPDATE projects SET slug = id::text WHERE slug IS NULL")
+
+# Step 3: add the constraint (deploy after backfill is complete)
+op.alter_column("projects", "slug", nullable=False)
+```
+
+**Transactions — explicit context manager:**
+```python
+async with session.begin():
+    await repo.save(project)
+    await repo.save(audit_log)
+# Both committed together or neither — no partial write
+```
+
 ## Data Validation
 
 - Validate at every system boundary: API request bodies, background job inputs, webhook payloads.
@@ -37,6 +69,35 @@ Read these constraints against the feature spec. For each constraint, determine 
 - Use `httpx` for HTTP calls in async context; `requests` only in sync code.
 - Stream large HTTP responses — do not buffer >~10 MB in memory before processing.
 - **Flag if:** the feature fetches from or pushes to an external HTTP service → verify the HTTP client is appropriate for the execution context.
+
+**Blocking call in async context — do this, not that:**
+```python
+# Wrong — blocks the entire event loop
+async def get_data():
+    response = requests.get("https://api.example.com/data")  # sync!
+
+# Correct — non-blocking
+async def get_data():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("https://api.example.com/data")
+
+# Correct — reuse a shared client (inject via Depends, don't create per-call)
+async def get_data(client: httpx.AsyncClient = Depends(get_http_client)):
+    response = await client.get("https://api.example.com/data")
+```
+
+**Parallel independent calls — use gather, not sequential await:**
+```python
+# Slow — sequential even though calls are independent
+user = await user_repo.get_by_id(user_id)
+tenant = await tenant_repo.get_by_id(tenant_id)
+
+# Fast — fires both concurrently
+user, tenant = await asyncio.gather(
+    user_repo.get_by_id(user_id),
+    tenant_repo.get_by_id(tenant_id),
+)
+```
 
 ## Deployment Target
 
@@ -56,6 +117,25 @@ Confirm which deployment target applies before flagging constraints:
 - All public function signatures must have type hints — no bare `def f(x, y)`.
 - Use `TypedDict`, Pydantic models, or dataclasses for structured dictionaries — not raw `dict[str, Any]`.
 - **Flag if:** the feature introduces a new public API surface → full type annotation required.
+
+**Typed dict vs raw dict — do this, not that:**
+```python
+# Wrong — opaque, no validation, no IDE help
+def process(data: dict) -> dict:
+    return {"id": data["id"], "name": data["name"]}
+
+# Correct — Pydantic at boundaries
+class ProjectInput(BaseModel):
+    id: UUID
+    name: str
+
+class ProjectOutput(BaseModel):
+    id: UUID
+    name: str
+
+def process(data: ProjectInput) -> ProjectOutput:
+    return ProjectOutput(id=data.id, name=data.name)
+```
 
 ## Dependency Management
 

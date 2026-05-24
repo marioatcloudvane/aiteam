@@ -8,8 +8,8 @@ core:
     role: product-owner
     modes: [plan]
     models:
-      claude: opus
-      openai: gpt-4o
+      claude: sonnet
+      openai: gpt-4o-mini
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
     role: requirements
@@ -29,8 +29,8 @@ core:
     role: app-context-updater
     modes: [research, implement]
     models:
-      claude: opus
-      openai: gpt-4o
+      claude: sonnet
+      openai: gpt-4o-mini
 
 architects:
   - id: python-saas-architect
@@ -51,6 +51,14 @@ developers:
     models:
       claude: opus
       openai: gpt-4o
+  - id: python-saas-frontend-engineer
+    file: Teams/python-saas/python-saas-frontend-engineer.md
+    role: frontend-developer
+    modes: [implement]
+    default: true
+    models:
+      claude: opus
+      openai: gpt-4o
 
 testers:
   - id: python-saas-test-manager
@@ -59,11 +67,19 @@ testers:
     modes: [implement]
     default: true
     models:
-      claude: opus
-      openai: gpt-4o
+      claude: sonnet
+      openai: gpt-4o-mini
   - id: python-saas-unit-test-engineer
     file: Teams/python-saas/python-saas-unit-test-engineer.md
     role: unit-tester
+    modes: [implement]
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
+  - id: python-saas-frontend-unit-test-engineer
+    file: Teams/python-saas/python-saas-frontend-unit-test-engineer.md
+    role: frontend-unit-tester
     modes: [implement]
     default: true
     models:
@@ -80,6 +96,16 @@ testers:
   - id: python-saas-ui-test-engineer
     file: Teams/python-saas/python-saas-ui-test-engineer.md
     role: ui-tester
+    modes: [implement]
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
+
+reviewers:
+  - id: python-saas-code-reviewer
+    file: Teams/python-saas/python-saas-code-reviewer.md
+    role: code-reviewer
     modes: [implement]
     default: true
     models:
@@ -130,4 +156,6 @@ skills:
   - Skills/shared/testing-scanner.md
   - Skills/shared/task-decomposer.md
   - Skills/python/platform-constraints.md
+  - Skills/python/python-performance-patterns.md
+  - Skills/python/frontend-constraints.md
   - Skills/shared/environment-validator.md

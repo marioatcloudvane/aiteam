@@ -14,6 +14,7 @@ Break the confirmed feature spec into implementation tasks. Return the task tabl
 - No task may exceed estimate `L` (one day). If it would, split it.
 - Test tasks are separate entries — never fold tests into the feature task they cover.
 - Write `—` in Depends On when a task has no dependencies.
+- For full-stack features, split tasks by layer (`BE` / `FE`) so backend and frontend engineers can work in parallel. A user story may produce both `BE` and `FE` tasks.
 
 ## Task types
 
@@ -25,6 +26,16 @@ Break the confirmed feature spec into implementation tasks. Return the task tabl
 | `logic` | Business logic, computation, background job, event handler |
 | `infra` | Config, environment variable, CI step, deployment change |
 | `test` | Unit tests, integration tests, UI automation tests |
+
+## Layers
+
+| Code | Assigned to |
+|------|------------|
+| `BE` | Backend implementation engineer (Python/API) |
+| `FE` | Frontend implementation engineer (React/TypeScript) |
+| `ALL` | Shared — applies to both layers (e.g., an infra change both engineers depend on) |
+
+Use `ALL` sparingly. Most tasks clearly belong to one layer.
 
 ## Estimates
 
@@ -39,12 +50,13 @@ Break the confirmed feature spec into implementation tasks. Return the task tabl
 
 Return a markdown table. Example:
 
-| ID | Title | Type | Depends On | Story | Est |
-|----|-------|------|-----------|-------|-----|
-| T-1 | User model + migration | data | — | US-1 | S |
-| T-2 | POST /api/users endpoint | api | T-1 | US-1 | M |
-| T-3 | Unit tests for POST /api/users | test | T-2 | US-1 | S |
-| T-4 | User list screen | ui | T-2 | US-1 | M |
-| T-5 | UI tests for user list | test | T-4 | US-1 | S |
+| ID | Title | Type | Layer | Depends On | Story | Est |
+|----|-------|------|-------|-----------|-------|-----|
+| T-1 | User model + migration | data | BE | — | US-1 | S |
+| T-2 | POST /api/users endpoint | api | BE | T-1 | US-1 | M |
+| T-3 | Unit tests for POST /api/users | test | BE | T-2 | US-1 | S |
+| T-4 | User list component | ui | FE | T-2 | US-1 | M |
+| T-5 | Component tests for UserList | test | FE | T-4 | US-1 | S |
+| T-6 | E2E: user creates project | test | FE | T-4 | US-1 | S |
 
 The plan orchestrator will incorporate this table directly into `IMPLEMENTATION_PLAN.md`.

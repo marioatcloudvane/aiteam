@@ -64,7 +64,20 @@ fi
 exit 0
 `;
 
-async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'claude') {
+const LOCK_FILE = path.join(process.cwd(), '.claude', 'aiteam-lock.json');
+
+function writeLock(teamFile, llmTarget, settings, agents) {
+  const lock = {
+    team: teamFile,
+    llmTarget,
+    settings,
+    installedAgentIds: agents.map(a => a.id),
+    updatedAt: new Date().toISOString(),
+  };
+  fs.writeFileSync(LOCK_FILE, JSON.stringify(lock, null, 2) + '\n', 'utf8');
+}
+
+async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'claude', teamFile = '') {
   if (!fs.existsSync(AGENTS_DIR)) {
     fs.mkdirSync(AGENTS_DIR, { recursive: true });
     console.log(chalk.gray(`\nCreated .claude/agents/`));
@@ -113,7 +126,7 @@ async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'cla
     process.stdout.write(`  Downloading ${skills.length} skill file(s)...`);
     for (const skillPath of skills) {
       const raw      = await fetchAgentFile(skillPath);
-      const destPath = path.join(process.cwd(), skillPath);
+      const destPath = path.join(process.cwd(), '.claude', 'skills', skillPath.replace(/^Skills\//, ''));
       fs.mkdirSync(path.dirname(destPath), { recursive: true });
       fs.writeFileSync(destPath, raw, 'utf8');
     }
@@ -131,6 +144,9 @@ async function installAgents(agents, teamConfig, settings = {}, llmTarget = 'cla
   if (needsEnvHook) {
     installEnvHook();
   }
+
+  // Write lock file so `aiteam update` can reproduce this install non-interactively
+  if (teamFile) writeLock(teamFile, llmTarget, settings, agents);
 }
 
 function scaffoldAiteam() {

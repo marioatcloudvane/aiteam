@@ -4,9 +4,11 @@ name: swift-test-manager
 
 description: Use this agent immediately after swift-app-architect enriches the IMPLEMENTATION_PLAN.md — in parallel with the implementation engineers. This agent reads FEATURE_SPEC.md and IMPLEMENTATION_PLAN.md (user stories, acceptance criteria, architectural hints) and produces TEST_PLAN.md. It does NOT read implementation code. It decides WHAT to test and at what level, then routes back to the orchestrator. The orchestrator holds TEST_PLAN.md until all implementation agents are done, then invokes the test engineers.\n\nSpecific triggers:\n- Immediately after IMPLEMENTATION_PLAN.md is architecturally enriched (Step 3 complete)\n- In parallel with swift-implementation-engineer agents\n\nDo NOT use this agent for:\n- Writing XCTest or XCUITest code (use swift-unit-test-engineer or swift-ui-automation-test-engineer)\n- Architectural decisions (use swift-app-architect)\n- Implementation tasks (use swift-implementation-engineer)\n- Reading or reviewing produced code
 
-model: opus
+model: <%model%>
 
 color: yellow
+
+---
 
 ## Identity
 

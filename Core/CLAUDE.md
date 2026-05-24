@@ -31,29 +31,38 @@ Once a mode is chosen:
 - **Research** → invoke `research-orchestrator`
 - **Plan** → invoke `plan-orchestrator`
 - **Implement** → invoke `implement-orchestrator`
-- **Spike** → handle directly here. Lightweight, time-boxed. Drop a one-line note in `.aiteam/<session>/spike.md` if useful. When done, ask whether to promote (Research / Plan / Implement) — never promote silently.
+- **Spike** → handle directly here. Lightweight, time-boxed. Drop a one-line note in `$session/spike.md` if useful. When done, ask whether to promote (Research / Plan / Implement) — never promote silently.
 
 Never invoke a specialist sub-agent (requirements-engineer, architect, engineer, etc.) directly from this manifest. That is the orchestrator's job.
 
 ## Artifacts
 
-All artifacts live under `.aiteam/<branch>/<date>/`. The path is derived automatically — no user input required:
+All artifacts live under `.aiteam/<branch>/<date>/<feature>/`. The path is derived from the branch, today's date, and a **feature slug** that scopes the session to one piece of work.
 
+**Before routing to any orchestrator on a new request**, ask:
+
+> "What's the name or ticket ID for this feature?" (one word to ~5 words, e.g. `user-auth`, `PROJ-142`, `payment-webhook`)
+
+Sanitise the answer into a slug: lowercase, spaces and special chars → hyphens, max 40 characters. This becomes `<feature>` in the session path.
+
+Path components:
 - `<branch>` — current git branch name, sanitised (slashes → hyphens, lowercased).
 - `<date>` — today's date in `YYYY-MM-DD` format.
+- `<feature>` — the sanitised feature slug provided by the user.
 
-Example: working on branch `feat/payments` on 2026-05-20 → `.aiteam/feat-payments/2026-05-20/`
+Example: branch `feat/payments`, date `2026-05-20`, feature `stripe-webhook` → `.aiteam/feat-payments/2026-05-20/stripe-webhook/`
 
 To derive the session path:
 ```
 branch=$(git rev-parse --abbrev-ref HEAD | tr '/' '-' | tr '[:upper:]' '[:lower:]')
 date=$(date +%Y-%m-%d)
-session=".aiteam/$branch/$date"
+feature=<sanitised-slug>
+session=".aiteam/$branch/$date/$feature"
 ```
 
 On a new piece of work, scaffold `$session/MANIFEST.md` from `Core/manifest.template.md` before invoking the orchestrator. Spike does not require a session directory unless promoted.
 
-Multiple runs on the same branch on the same day share a session directory — artifacts are overwritten, not duplicated. A new day or a new branch always produces a fresh directory.
+Each feature on the same branch and day gets its own isolated directory — no artifact collisions when working on two features in parallel.
 
 ## Mode Gates
 

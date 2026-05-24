@@ -8,8 +8,8 @@ core:
     role: product-owner
     modes: [plan]
     models:
-      claude: opus
-      openai: gpt-4o
+      claude: sonnet
+      openai: gpt-4o-mini
   - id: requirements-engineer
     file: Support/Requirements/requirements-engineer.md
     role: requirements
@@ -29,8 +29,8 @@ core:
     role: app-context-updater
     modes: [research, implement]
     models:
-      claude: opus
-      openai: gpt-4o
+      claude: sonnet
+      openai: gpt-4o-mini
 
 architects:
   - id: swift-app-architect
@@ -59,8 +59,8 @@ testers:
     modes: [implement]
     default: true
     models:
-      claude: opus
-      openai: gpt-4o
+      claude: sonnet
+      openai: gpt-4o-mini
   - id: swift-unit-test-engineer
     file: Teams/swift-apple/swift-unit-test-engineer.md
     role: unit-tester
@@ -72,6 +72,16 @@ testers:
   - id: swift-ui-automation-test-engineer
     file: Teams/swift-apple/swift-ui-automation-test-engineer.md
     role: ui-tester
+    modes: [implement]
+    default: true
+    models:
+      claude: sonnet
+      openai: gpt-4o-mini
+
+reviewers:
+  - id: swift-code-reviewer
+    file: Teams/swift-apple/swift-code-reviewer.md
+    role: code-reviewer
     modes: [implement]
     default: true
     models:
@@ -121,4 +131,6 @@ skills:
   - Skills/shared/security-scanner.md
   - Skills/shared/testing-scanner.md
   - Skills/shared/task-decomposer.md
+  - Skills/shared/environment-validator.md
   - Skills/swift/platform-constraints.md
+  - Skills/swift/swift-snapshot-testing.md

@@ -57,16 +57,25 @@ The standard flow is always:
 - **swift-implementation-engineer** → implements each task. Spawn one agent per user story in parallel.
 - **swift-test-manager** → designs the test plan from FEATURE_SPEC.md and IMPLEMENTATION_PLAN.md. Runs in parallel with implementation — does NOT wait for code and does NOT read code.
 
-**Step 5 (parallel — start both immediately ):**
+**⛔ Implementation Gate: wait here.** Do NOT proceed to Step 4.5 until ALL swift-implementation-engineer agents have reported DONE. The swift-test-manager may finish earlier — hold its TEST_PLAN.md until the implementation gate clears.
 
-- **swift-unit-test-engineer** → writes unit tests from TEST_PLAN.md
-- **swift-ui-automation-test-engineer** → writes UI automation tests from TEST_PLAN.md
+**Step 4.5: swift-code-reviewer** → runs after the implementation gate, before test engineers are invoked.
 
-**⛔ Gate: wait here.** Do NOT proceed to Step 6 until ALL implementation agents AND test agents from Step 4 and 5 have routed back with status DONE.
+- Input: all task reports from Step 4 (listing files created/modified) + IMPLEMENTATION_PLAN.md (architectural hints).
+- Output: `$session/CODE_REVIEW.md` with findings classified as BLOCKING or ADVISORY.
+- **BLOCKING findings**: route each finding to the responsible engineer for a fix, then re-review the affected files. Repeat until clear (max 2 cycles). Do not invoke test engineers until all BLOCKING findings are resolved.
+- **ADVISORY_ONLY or CLEAN**: append advisories to `$session/notes.md` and proceed to Step 5.
 
-**Step 6 (start after Gate ):
+**Step 5 (parallel — start both immediately after Step 4.5 clears):**
 
-****Execute the unit tests. If you find bugs, continue with the Bug Flow specified below**
+- **swift-unit-test-engineer** → writes unit tests from the Unit Test Cases section of TEST_PLAN.md.
+- **swift-ui-automation-test-engineer** → writes UI automation tests from the UI Automation Test Cases section of TEST_PLAN.md.
+
+**⛔ Test Writing Gate: wait here.** Do NOT proceed to Step 6 until ALL test engineers from Step 5 have routed back with status DONE.
+
+**Step 6 (start after Test Writing Gate):**
+
+**Execute the unit tests. If you find bugs, continue with the Bug Flow specified below.**
 
 <%if agent "apple-app-store-preparer">
 
@@ -120,11 +129,13 @@ Always pause before invoking an agent or moving to the next workflow step. Prese
 
 A key concept is "Back Routing". Whenever agents finish their work, they route back to you. You then decide what to do next based on the autonomy level above.
 
-**Backrouting 1 (Implementation):** Each swift-implementation-engineer agent routes back when its user story is DONE or BLOCKED. Track which agents have reported. Only advance to Step 5 (test engineers) once ALL implementation agents have reported DONE. If any are BLOCKED, resolve the blocker before continuing.
+**Backrouting 1 (Implementation):** Each swift-implementation-engineer agent routes back when its user story is DONE or BLOCKED. Track which agents have reported. Only advance to Step 4.5 (code review) once ALL implementation agents have reported DONE. If any are BLOCKED, resolve the blocker before continuing.
 
-**Backrouting 2 (Testing):** Test engineers route back with their findings. If errors are found, follow the Bug Flow — analysis-only with the implementation engineer → bug tasks via the PPO → fix with the implementation engineer. Do NOT route through the requirements-engineer or architect.
+**Backrouting 2 (Code Review):** The swift-code-reviewer routes back with a verdict (BLOCKING / ADVISORY_ONLY / CLEAN). BLOCKING findings go back to the responsible engineers for fixes before test engineers are invoked. ADVISORY findings are appended to notes.md and do not block progress.
 
-**Backrouting 3 (Test Manager):** The swift-test-manager routes back once TEST_PLAN.md is written. It may finish before implementation is complete — that is expected and correct. Hold the TEST_PLAN.md and invoke the test engineers only after the Step 4 gate clears.
+**Backrouting 3 (Test Engineers):** Test engineers route back with their findings. If errors are found, follow the Bug Flow — analysis-only with the implementation engineer → bug tasks via the PPO → fix with the implementation engineer. Do NOT route through the requirements-engineer or architect.
+
+**Backrouting 4 (Test Manager):** The swift-test-manager routes back once TEST_PLAN.md is written. It may finish before implementation is complete — that is expected and correct. Hold the TEST_PLAN.md and invoke test engineers only after Step 4.5 (code review) clears.
 
 ## Rules
 

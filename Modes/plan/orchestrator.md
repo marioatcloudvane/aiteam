@@ -38,14 +38,14 @@ RE runs the planning conversation, confirms scope with the user, and writes `$se
 
 Invoke `<team>-app-architect`. Pass:
 - `$session/feature-spec.md`
-- The team's platform skill path: `Skills/<team>/platform-constraints.md`
+- The team's platform skill path: `.claude/skills/<team>/platform-constraints.md`
 
 Architect performs a role-switching review and returns findings inline — no files written:
 
 - **Engineering lens**: feasibility, implementation order, dependency risks
-- **Platform lens**: reads `Skills/<team>/platform-constraints.md`, flags applicable constraints
-- **Security lens**: reads `Skills/shared/security-scanner.md` in forward-looking mode — flags risks the *plan* carries, not an audit of existing code
-- **Task decomposition**: reads `Skills/shared/task-decomposer.md`, produces the task table
+- **Platform lens**: reads `.claude/skills/<team>/platform-constraints.md`, flags applicable constraints
+- **Security lens**: reads `.claude/skills/shared/security-scanner.md` in forward-looking mode — flags risks the *plan* carries, not an audit of existing code
+- **Task decomposition**: reads `.claude/skills/shared/task-decomposer.md`, produces the task table
 
 ### 3. Synthesise
 

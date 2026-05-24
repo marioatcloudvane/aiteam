@@ -53,23 +53,26 @@ Workflow shape agreed. Step (a) scaffolding landed: new `Core/`, `Modes/`, `Skil
 .aiteam/
 ├── <branch>/                       # sanitised git branch name (slashes → hyphens)
 │   └── <date>/                     # YYYY-MM-DD — one directory per branch+day
-│       ├── MANIFEST.md             # mode status + history for this session
-│       ├── RESEARCH_BRIEF.md       # produced by research-orchestrator
-│       ├── IMPLEMENTATION_PLAN.md  # produced by plan-orchestrator
-│       ├── TEST_PLAN.md            # produced by test-manager (implement mode)
-│       ├── notes.md                # detour findings, blockers, decisions
-│       └── spike.md                # only if a spike was promoted
+│       └── <feature>/              # feature slug asked at flow start (e.g. user-auth, PROJ-142)
+│           ├── MANIFEST.md             # mode status + history for this session
+│           ├── RESEARCH_BRIEF.md       # produced by research-orchestrator
+│           ├── IMPLEMENTATION_PLAN.md  # produced by plan-orchestrator
+│           ├── TEST_PLAN.md            # produced by test-manager (implement mode)
+│           ├── DRIFT_REPORT.md         # plan vs. delivery comparison (implement exit)
+│           ├── notes.md                # detour findings, blockers, decisions
+│           └── spike.md                # only if a spike was promoted
 └── config.yaml                     # team config (autonomy level, rulebook path)
 ```
 
-Session path is derived automatically — no user input:
+Session path derivation — slug is asked at the start of each flow:
 ```
 branch=$(git rev-parse --abbrev-ref HEAD | tr '/' '-' | tr '[:upper:]' '[:lower:]')
 date=$(date +%Y-%m-%d)
-session=".aiteam/$branch/$date"
+feature=<sanitised-slug-from-user>
+session=".aiteam/$branch/$date/$feature"
 ```
 
-All artifacts for a session are flat inside the session directory — no mode-based sub-folders. Multiple runs on the same branch+day share the directory; a new branch or new day always produces a fresh one. Zero merge conflicts: different branches always produce different paths.
+Each feature gets its own directory even on the same branch and day — no artifact collisions when two features are in flight in parallel. A new branch or new day always produces fresh parent directories.
 
 ## Mapping today's agents to modes
 
