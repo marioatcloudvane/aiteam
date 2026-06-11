@@ -105,29 +105,9 @@ Follow the Bug Flow above without human interaction.
 
 Follow the Bug Flow above without human interaction.
 
-#### Autonomy
-
-<%if settings.autonomyLevel == auto%>
-
-Proceed autonomously. Invoke agents and move through the workflow without pausing for user confirmation at each step. Only stop when a blocker requires human judgement.
-
-<%endif%>
-
-<%if settings.autonomyLevel == balanced%>
-
-Use your judgement. Proceed autonomously through routine steps but pause and confirm with the user before starting Step 4 on large features (more than 3 user stories) and before routing bug fixes back into the workflow. Always show test findings to the user after Step 5 completes — the user decides whether to accept or trigger the Bug Flow.
-
-<%endif%>
-
-<%if settings.autonomyLevel == hil%>
-
-Always pause before invoking an agent or moving to the next workflow step. Present your plan to the user and wait for explicit confirmation before proceeding.
-
-<%endif%>
-
 ### Back Routing
 
-A key concept is "Back Routing". Whenever agents finish their work, they route back to you. You then decide what to do next based on the autonomy level above.
+A key concept is "Back Routing". Whenever agents finish their work, they route back to you.
 
 **Backrouting 1 (Implementation):** Each swift-implementation-engineer agent routes back when its user story is DONE or BLOCKED. Track which agents have reported. Only advance to Step 4.5 (code review) once ALL implementation agents have reported DONE. If any are BLOCKED, resolve the blocker before continuing.
 

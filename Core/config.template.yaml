@@ -1,7 +1,4 @@
 # .aiteam/config.yaml — per-project AI Team settings
 
-autonomy:
-  level: balanced      # auto | balanced | hil
-
 team:
   rulebook: Teams/<team>/rulebook.md   # path to team rulebook; read by scanner skills

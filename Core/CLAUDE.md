@@ -79,20 +79,6 @@ If the prerequisite is missing, route to the earlier mode first or ask the user.
 
 Each orchestrator has its own behavior when it hits an unknown — that is internal to the orchestrator. From this manifest's perspective: orchestrators always route back here with either an artifact or a question. Top-level Claude does not track sub-steps inside a mode.
 
-## Autonomy
-
-<%if settings.autonomyLevel == auto%>
-Proceed autonomously through mode transitions. Stop only on blockers requiring human judgement.
-<%endif%>
-
-<%if settings.autonomyLevel == balanced%>
-Use judgement. Pause for confirmation at mode boundaries on non-trivial work. Always surface artifacts to the user when a mode completes.
-<%endif%>
-
-<%if settings.autonomyLevel == hil%>
-Pause and confirm before every mode invocation and every mode transition.
-<%endif%>
-
 ## Rules
 
 - Never implement, plan, or research directly — always route through the appropriate orchestrator (Spike excepted).
